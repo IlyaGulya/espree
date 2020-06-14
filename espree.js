@@ -73,11 +73,11 @@ const parsers = {
             options.ecmaFeatures.jsx
         );
 
-        const jsx = useJsx && [jsx()] || []
+        const jsxExtension = useJsx && [jsx()] || []
 
         const additionalAcornExtensions = options.additionalAcornExtensions || []
 
-        const allExtensions = jsx.concat(additionalAcornExtensions).concat([espree()])
+        const allExtensions = jsxExtension.concat(additionalAcornExtensions).concat([espree()])
 
         const parser = acorn.Parser.extend(allExtensions)
 
