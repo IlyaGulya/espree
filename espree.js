@@ -79,7 +79,7 @@ const parsers = {
 
         const allExtensions = jsxExtension.concat(additionalAcornExtensions).concat([espree()])
 
-        const parser = acorn.Parser.extend(allExtensions)
+        const parser = acorn.Parser.extend(...allExtensions)
 
         return parser;
     }
