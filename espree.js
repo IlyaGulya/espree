@@ -66,23 +66,6 @@ const { getLatestEcmaVersion, getSupportedEcmaVersions } = require("./lib/option
 
 // To initialize lazily.
 const parsers = {
-    _regular: null,
-    _jsx: null,
-
-    get regular() {
-        if (this._regular === null) {
-            this._regular = acorn.Parser.extend(espree());
-        }
-        return this._regular;
-    },
-
-    get jsx() {
-        if (this._jsx === null) {
-            this._jsx = acorn.Parser.extend(jsx(), espree());
-        }
-        return this._jsx;
-    },
-
     get(options) {
         const useJsx = Boolean(
             options &&
@@ -90,7 +73,15 @@ const parsers = {
             options.ecmaFeatures.jsx
         );
 
-        return useJsx ? this.jsx : this.regular;
+        const jsx = useJsx && [jsx()] || []
+
+        const additionalAcornExtensions = options.additionalAcornExtensions || []
+
+        const allExtensions = jsx.concat(additionalAcornExtensions).concat([espree()])
+
+        const parser = acorn.Parser.extend(allExtensions)
+
+        return parser;
     }
 };
 
